@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    
+ <script>
+     let mymodule= angular.module("myModuleKuch",[]);
+       let myController=mymodule.controller("myControllerKuch",function($scope,$http)
+
+       {
+
+        let s=$scope;
+        let email=s.cid=localStorage.getItem("activeUser");
+        $scope.jsonary=[];
+        $scope.doFetchjob=function()
+        {
+            // alert($scope.cid);
+            
+            let url="/fatchjob?emailKuch="+$scope.cid;
+            $http.get(url).then(fxSuccess,fxFail);
+
+            function fxSuccess(response)
+            {
+                // alert(JSON.stringify(response.data));
+                $scope.jsonary=response.data;
+            }
+            function fxFail(err)
+            {
+                alert(err.data);
+            }
+        }
+
+    
+        $scope.doDelete=function(cid)
+        {  
+            if(confirm("R U Sure?")==false) return;
+            let url="/doDel?emailKuch="+cid;
+            $http.get(url).then(fxSuccess,fxFail);
+
+            function fxSuccess(response)
+            {
+                // alert(response.data);
+                 $scope.doFetchjob();
+               
+            }
+            function fxFail(err)
+            {
+                alert(err.data);
+            }
+        }
+
+        $scope.krish=[];
+        $scope.doMore=function(cid)
+        {
+           
+            
+            let url="/jobdetail?emailKuch="+cid;
+            $http.get(url).then(fxSuccess,fxFail);
+
+            function fxSuccess(response)
+            {
+                // alert(JSON.stringify(response.data));
+                $scope.krish=response.data;
+            }
+            function fxFail(err)
+            {
+                alert(err.data);
+            }
+        }
+    })
+
+  </script>
+</head>
+<body ng-app="myModuleKuch" ng-controller="myControllerKuch" onload="init()">
+    <form class="container row mx-auto py-3">
+        <center>
+        <div class="col-md-6">
+            <label for="inputEmail4"  class="form-label"><b>Email ID :</b></label>
+            <input type="email" name="emailform" ng-model="cid" class="form-control" id="mail" readonly>
+            <!-- <h3 class="m-3">Email : <span id="mail" ng-model="cid"></span></h3> -->
+          </div>
+          <br>
+          <div class="col-md-3">
+              <label for="Fatch" class="form-label"> </label><br>
+            <button id="fatch" type="button"  ng-click="doFetchjob();" class="btn btn-outline-secondary">Get All Published Job</button>
+          </div>
+        </center>
+         
+      </form>
+      <hr>
+
+
+      <center><h2> Records</h2></center>
+      <hr>
+      <center>
+        
+        <table width="500" >
+            <tr>
+                <th>Sr. No</th>
+                <th>Client ID</th>
+                <th>Job Title</th>
+                
+            </tr>
+
+            <tr ng-repeat="obj in jsonary">
+                <td>{{$index+1}}</td>
+                <td>{{obj.cid}}</td>
+                <td>{{obj.jobtitle}}</td>
+            
+
+                <td align="center">
+                    <a href="#" class="btn  btn-danger" ng-click="doDelete(obj.jobid);">Delete</a>
+                    <a href="#" class="btn  btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal" ng-click="doMore(obj.jobid);">More</a>
+                    
+                </td>
+            </tr>
+        </table>
+
+    </center>
+    
+    
+   
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" ng-repeat="obj in krish">
+            <p><b>Job Type : </b> {{obj.jobtype}}</p>
+            <p><b>Address : </b> {{obj.address}}</p>
+            <p><b>City : </b>{{obj.city}}</p>
+            <p><b>Education : </b>{{obj.education}}</p>
+            <p><b>Contact : </b>{{obj.contact}}</p>
+
+        <form>
+        
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
