@@ -9,9 +9,9 @@ var mysql2=require("mysql2");
 
 
 var app=express();
+const port = process.env.PORT || 4000;
 
-
-app.listen(1018,function(){
+app.listen(port,function(){
     console.log("Server Started");
 
 })
