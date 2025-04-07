@@ -6,11 +6,15 @@ var nodemailer = require('nodemailer');
 
 var mysql2=require("mysql2");
 
-
+const port = process.env.PORT || 4000;
 
 var app=express();
 const port = process.env.PORT || 4000;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2bfb065b6c5da067f510f45339f552b3d8f4b570
 app.listen(port,function(){
     console.log("Server Started");
 
